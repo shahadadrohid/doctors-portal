@@ -1,5 +1,6 @@
 import React from 'react';
 import chair from '../../../assets/images/chair.png'
+import PrimaryButton from '../Shared/PrimaryButton/PrimaryButton';
 
 const Banner = () => {
     return (
@@ -10,7 +11,7 @@ const Banner = () => {
                     <div>
                         <h1 className="text-5xl font-bold">Your New Smile Starts Here</h1>
                         <p className="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. <br /> In deleniti eaque aut repudiandae et a id nisi.</p>
-                        <button className="btn btn-primary text-white bg-gradient-to-r from-secondary to-primary">Get Started</button>
+                        <PrimaryButton>Get started</PrimaryButton>
                     </div>
                 </div>
             </div>
