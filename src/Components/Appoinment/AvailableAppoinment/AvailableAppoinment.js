@@ -4,16 +4,17 @@ import Booking from '../Booking/Booking';
 
 const AvailableAppoinment = ({ date }) => {
     const [services, setServices] = useState([]);
+    console.log(services)
 
     useEffect(() => {
-        fetch('service.json')
+        fetch('services.json')
             .then(res => res.json())
             .then(data => setServices(data))
     }, [])
     return (
         <div>
             <p className="text-xl text-center text-secondary">Available appoinment: {format(date, 'PP')}</p>
-            <div>
+            <div className='grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-10'>
                 {
                     services.map(service => <Booking key={services._id} service={service}></Booking>)
                 }
