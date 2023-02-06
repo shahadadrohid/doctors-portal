@@ -1,11 +1,12 @@
 import React from 'react';
 import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Loading from '../../Home/Shared/Loading/Loading';
 import auth from '../../../firebase.init';
 
 const Login = () => {
+    const navigate = useNavigate();
     const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
     const { register, formState: { errors }, handleSubmit } = useForm();
     const [
@@ -28,6 +29,7 @@ const Login = () => {
     const onSubmit = data => {
         console.log(data)
         signInWithEmailAndPassword(data.email, data.password)
+        navigate('/appoinment')
     }
     return (
         <div className="flex h-screen justify-center items-center">
