@@ -1,12 +1,14 @@
 import React from 'react';
 import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Loading from '../../Home/Shared/Loading/Loading';
 import auth from '../../../firebase.init';
 
 const Login = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    let from = location.state?.from?.pathname || '/'
     const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
     const { register, formState: { errors }, handleSubmit } = useForm();
     const [
@@ -16,20 +18,22 @@ const Login = () => {
         error,
     ] = useSignInWithEmailAndPassword(auth);
 
+
+
+    if (loading || gLoading) {
+        return <Loading></Loading>
+    }
+
     let signInError;
     if (error || gError) {
         signInError = <p className="text-red-500">{error?.message || gError?.message}</p>
     }
-    if (gUser) {
-        console.log(gUser)
-    }
-    if (loading || gLoading) {
-        return <Loading></Loading>
+    if (user || gUser) {
+        navigate(from, { replace: true })
     }
     const onSubmit = data => {
         console.log(data)
-        signInWithEmailAndPassword(data.email, data.password)
-        navigate('/appoinment')
+        signInWithEmailAndPassword(data.email, data.password);
     }
     return (
         <div className="flex h-screen justify-center items-center">

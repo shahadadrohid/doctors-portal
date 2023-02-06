@@ -3,6 +3,7 @@ import './App.css';
 import Appoinment from './Components/Appoinment/Appoinment/Appoinment';
 import Login from './Components/Authentication/Login/Login';
 import Register from './Components/Authentication/Register/Register';
+import RequireAuth from './Components/Authentication/RequireAuth/RequireAuth';
 import Home from './Components/Home/Home/Home';
 import Navbar from './Components/Home/Shared/Navbar/Navbar';
 
@@ -13,7 +14,12 @@ function App() {
       <Routes>
         <Route path='/' element={
           <Home></Home>}></Route>
-        <Route path='/appoinment' element={<Appoinment></Appoinment>}></Route>
+        <Route path='/appoinment'
+          element={
+            <RequireAuth>
+              <Appoinment />
+            </RequireAuth>
+          }></Route>
         <Route path='/signup' element={<Register></Register>}></Route>
         <Route path='/login' element={<Login></Login>}></Route>
       </Routes>
