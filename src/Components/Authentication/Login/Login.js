@@ -1,28 +1,39 @@
 import React from 'react';
-import { useSignInWithGoogle } from 'react-firebase-hooks/auth';
+import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { useForm } from 'react-hook-form';
-import auth from '../../../firbase.init';
+import { Link } from 'react-router-dom';
+import Loading from '../../Home/Shared/Loading/Loading';
+import auth from '../../../firebase.init';
 
 const Login = () => {
-    const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
-
-
+    const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
     const { register, formState: { errors }, handleSubmit } = useForm();
+    const [
+        signInWithEmailAndPassword,
+        user,
+        loading,
+        error,
+    ] = useSignInWithEmailAndPassword(auth);
 
-    if (user) {
-        console.log(user)
+    let signInError;
+    if (error || gError) {
+        signInError = <p className="text-red-500">{error?.message || gError?.message}</p>
     }
-    if (error) {
-        console.log(error)
+    if (gUser) {
+        console.log(gUser)
+    }
+    if (loading || gLoading) {
+        return <Loading></Loading>
     }
     const onSubmit = data => {
         console.log(data)
+        signInWithEmailAndPassword(data.email, data.password)
     }
     return (
         <div className="flex h-screen justify-center items-center">
             <div className="card w-96 bg-base-100 shadow-xl">
                 <div className="card-body">
-                    <h2 className="text-4xl font-bold text-primary text-center">Login</h2>
+                    <h2 className="text-4xl font-bold text-accent text-center">Login</h2>
                     <form onSubmit={handleSubmit(onSubmit)}>
 
                         {/* Input email field with validation */}
@@ -74,11 +85,12 @@ const Login = () => {
                                 {errors.password?.type === 'midLength' && <span class="label-text-alt text-red-500">{errors.password.message}</span>}
                             </label>
                         </div>
-
+                        {signInError}
                         <input
                             className="btn btn-accent w-full text-white" type="submit" value="login" />
 
                     </form>
+                    <p>New to Doctors portal? <Link className="text-secondary" to='/signup'>Create new account</Link> </p>
                     <div className="divider">OR</div>
 
                     <button
