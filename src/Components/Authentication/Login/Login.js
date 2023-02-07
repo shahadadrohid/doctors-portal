@@ -6,8 +6,6 @@ import Loading from '../../Home/Shared/Loading/Loading';
 import auth from '../../../firebase.init';
 
 const Login = () => {
-    const [email, setEmail] = useState('')
-    console.log(email)
     const navigate = useNavigate();
     const location = useLocation();
     let from = location.state?.from?.pathname || '/';
@@ -23,12 +21,10 @@ const Login = () => {
         error,
     ] = useSignInWithEmailAndPassword(auth);
 
-    const [sendPasswordResetEmail, sending, ResetError] = useSendPasswordResetEmail(auth);
 
     if (loading || gLoading) {
         return <Loading></Loading>
     }
-    let actionCodeSettings;
     let signInError;
     if (error || gError) {
         signInError = <p className="text-red-500">{error?.message || gError?.message}</p>
@@ -38,7 +34,6 @@ const Login = () => {
     }
     const onSubmit = data => {
         console.log(data.email)
-        setEmail(data.email)
         signInWithEmailAndPassword(data.email, data.password);
     }
     return (

@@ -1,12 +1,14 @@
 import React from 'react';
 import { useCreateUserWithEmailAndPassword, useUpdateProfile, useSignInWithGoogle, useSendEmailVerification } from 'react-firebase-hooks/auth';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../../firebase.init';
 import Loading from '../../Home/Shared/Loading/Loading';
 
 const Register = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || '/'
     const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
     const { register, formState: { errors }, handleSubmit } = useForm();
     const [
@@ -30,15 +32,12 @@ const Register = () => {
         return <Loading></Loading>
     }
     const onSubmit = async data => {
-        console.log(data)
         const success = await createUserWithEmailAndPassword(data.email, data.password);
         await updateProfile({ displayName: data.name })
-        navigate('/appoinment')
-        console.log(success)
         if (success) {
-            console.log(success);
             sendEmailVerification()
         }
+        navigate(from, { replace: true })
     }
     return (
         <div className="flex h-screen justify-center items-center">
