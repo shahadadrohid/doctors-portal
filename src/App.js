@@ -8,6 +8,9 @@ import Home from './Components/Home/Home/Home';
 import Navbar from './Components/Home/Shared/Navbar/Navbar';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import Dashboard from './Components/Dashboard/Dashboard/Dashboard';
+import MyAppoinment from './Components/Dashboard/MyAppoinment/MyAppoinment';
+import MyReview from './Components/Dashboard/MyReview/MyReview';
 
 function App() {
   return (
@@ -22,11 +25,16 @@ function App() {
               <Appoinment />
             </RequireAuth>
           }></Route>
+        <Route path="/dashboard" element={
+          <RequireAuth> <Dashboard /> </RequireAuth>}>
+          <Route index element={<MyAppoinment></MyAppoinment>}></Route>
+          <Route path="review" element={<MyReview></MyReview>}></Route>
+        </Route>
         <Route path='/signup' element={<Register></Register>}></Route>
         <Route path='/login' element={<Login></Login>}></Route>
       </Routes>
       <ToastContainer />
-    </div>
+    </div >
   );
 }
 
