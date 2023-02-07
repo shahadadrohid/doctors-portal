@@ -1,16 +1,21 @@
-import React from 'react';
-import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
+import React, { useState } from 'react';
+import { useSignInWithEmailAndPassword, useSignInWithGoogle, useSendPasswordResetEmail } from 'react-firebase-hooks/auth';
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Loading from '../../Home/Shared/Loading/Loading';
 import auth from '../../../firebase.init';
 
 const Login = () => {
+    const [email, setEmail] = useState('')
+    console.log(email)
     const navigate = useNavigate();
     const location = useLocation();
-    let from = location.state?.from?.pathname || '/'
+    let from = location.state?.from?.pathname || '/';
+
     const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
+
     const { register, formState: { errors }, handleSubmit } = useForm();
+
     const [
         signInWithEmailAndPassword,
         user,
@@ -18,12 +23,12 @@ const Login = () => {
         error,
     ] = useSignInWithEmailAndPassword(auth);
 
-
+    const [sendPasswordResetEmail, sending, ResetError] = useSendPasswordResetEmail(auth);
 
     if (loading || gLoading) {
         return <Loading></Loading>
     }
-
+    let actionCodeSettings;
     let signInError;
     if (error || gError) {
         signInError = <p className="text-red-500">{error?.message || gError?.message}</p>
@@ -32,7 +37,8 @@ const Login = () => {
         navigate(from, { replace: true })
     }
     const onSubmit = data => {
-        console.log(data)
+        console.log(data.email)
+        setEmail(data.email)
         signInWithEmailAndPassword(data.email, data.password);
     }
     return (
@@ -43,13 +49,13 @@ const Login = () => {
                     <form onSubmit={handleSubmit(onSubmit)}>
 
                         {/* Input email field with validation */}
-                        <div class="form-control w-full max-w-xs">
-                            <label class="label">
-                                <span class="label-text">Email</span>
+                        <div className="form-control w-full max-w-xs">
+                            <label className="label">
+                                <span className="label-text">Email</span>
                             </label>
 
                             <input
-                                type="email" placeholder="Email Address" class="input input-bordered w-full max-w-xs"
+                                type="email" placeholder="Email Address" className="input input-bordered w-full max-w-xs"
                                 {...register("email", {
                                     required: {
                                         value: true,
@@ -61,20 +67,20 @@ const Login = () => {
                                     }
                                 })}
                             />
-                            <label class="label">
-                                {errors.email?.type === 'required' && <span class="label-text-alt text-red-500">{errors.email.message}</span>}
-                                {errors.email?.type === 'pattern' && <span class="label-text-alt text-red-500">{errors.email.message}</span>}
+                            <label className="label">
+                                {errors.email?.type === 'required' && <span className="label-text-alt text-red-500">{errors.email.message}</span>}
+                                {errors.email?.type === 'pattern' && <span className="label-text-alt text-red-500">{errors.email.message}</span>}
                             </label>
                         </div>
 
                         {/* Input password field with validation */}
-                        <div class="form-control w-full max-w-xs">
-                            <label class="label">
-                                <span class="label-text">Password</span>
+                        <div className="form-control w-full max-w-xs">
+                            <label className="label">
+                                <span className="label-text">Password</span>
                             </label>
 
                             <input
-                                type="password" placeholder="Password" class="input input-bordered w-full max-w-xs"
+                                type="password" placeholder="Password" className="input input-bordered w-full max-w-xs"
                                 {...register("password", {
                                     required: {
                                         value: true,
@@ -86,12 +92,13 @@ const Login = () => {
                                     }
                                 })}
                             />
-                            <label class="label">
-                                {errors.password?.type === 'required' && <span class="label-text-alt text-red-500">{errors.password.message}</span>}
-                                {errors.password?.type === 'midLength' && <span class="label-text-alt text-red-500">{errors.password.message}</span>}
+                            <label className="label">
+                                {errors.password?.type === 'required' && <span className="label-text-alt text-red-500">{errors.password.message}</span>}
+                                {errors.password?.type === 'midLength' && <span className="label-text-alt text-red-500">{errors.password.message}</span>}
                             </label>
                         </div>
                         {signInError}
+                        <p className="text-red-500 mb-2 cursor-pointer">Forgot Password?</p>
                         <input
                             className="btn btn-accent w-full text-white" type="submit" value="login" />
 
