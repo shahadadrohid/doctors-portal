@@ -14,6 +14,10 @@ const Navbar = () => {
     if (error || signOutError) {
 
     }
+    const logOut = () => {
+        signOut();
+        localStorage.removeItem('accessToken')
+    }
     const menuItems =
         <>
             <li><Link to="/">Home</Link></li>
@@ -26,7 +30,7 @@ const Navbar = () => {
             }
             {
                 user ?
-                    <li><button onClick={signOut}
+                    <li><button onClick={logOut}
                         className="btn btn-accent text-white"
                     >Sign Out</button></li>
                     :

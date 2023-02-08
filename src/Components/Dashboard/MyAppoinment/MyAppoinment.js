@@ -15,10 +15,10 @@ const MyAppoinment = () => {
     }, [user])
     return (
         <div>
-            <p>My appoinment: {appoinment.length}</p>
-            <div class="overflow-x-auto">
+            <h2 className="text-2xl font-bold text-accent mb-5">My Appoinments</h2>
+            <div class="overflow-x-auto border-2 border-accent rounded-xl">
                 <table class="table w-full">
-                    <thead>
+                    <thead className="border-b-2 border-accent">
                         <tr>
                             <th>No</th>
                             <th>Treatment</th>
