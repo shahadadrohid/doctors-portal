@@ -65,7 +65,7 @@ const BookingModal = ({ treament, date, setTreament, refetch }) => {
                         <input type="Submit" placeholder="Type here" className="btn btn-secondary w-full max-w-xs" />
                     </form>
                     {/* <div className="modal-action">
-                        <label for="booking-modal" className="btn">Yay!</label>
+                        <label htmlFor="booking-modal" className="btn">Yay!</label>
                     </div> */}
                 </div>
             </div>
