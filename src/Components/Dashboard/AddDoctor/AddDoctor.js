@@ -2,13 +2,19 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 import Loading from '../../Home/Shared/Loading/Loading';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import { useSignOut } from 'react-firebase-hooks/auth';
+import auth from '../../../firebase.init';
 
 const AddDoctor = () => {
-    const { register, formState: { errors }, handleSubmit } = useForm();
+    const navigate = useNavigate();
+    const { register, formState: { errors }, handleSubmit, reset } = useForm();
+    const [signOut, signOutLoading, signOutError] = useSignOut(auth);
 
     const { data: services, isLoading } = useQuery('services', () => fetch('http://localhost:5000/service').then(res => res.json()))
 
-    if (isLoading) {
+    if (isLoading || signOutLoading) {
         return <Loading></Loading>
     }
     const imageApi = `4a076b70e626f9e2cad904fa956dd889`;
@@ -42,11 +48,25 @@ const AddDoctor = () => {
                             'content-type': 'application/json',
                             authorization: `Bearer ${localStorage.getItem('accessToken')}`
                         },
-                        body: JSON.parse(doctor)
+                        body: JSON.stringify(doctor)
                     })
-                        .then(res => res.json())
+                        .then(res => {
+                            if (res.status === 403) {
+                                toast.error('You can not add doctor')
+                                navigate('/login')
+                                signOut()
+                            }
+                            return res.json()
+                        })
                         .then(inserted => {
                             console.log(inserted)
+                            if (inserted.insertedId) {
+                                toast.success('Successfully added doctor')
+                                reset();
+                            }
+                            else {
+                                toast.error('Unsuccesfull')
+                            }
                         })
                 }
             })
