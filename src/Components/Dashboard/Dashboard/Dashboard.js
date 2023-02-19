@@ -23,7 +23,11 @@ const Dashboard = () => {
                     <h2 className="text-3xl font-bold text-center text-accent mb-5">Dashboard</h2>
                     <li><Link to="/dashboard" className="border-2 border-accent mb-2 text-accent font-semibold">My Appoinments</Link></li>
                     <li><Link to="/dashboard/review" className="border-2 border-accent mb-2 text-accent font-semibold">My Review</Link></li>
-                    {admin && <li><Link to="/dashboard/users" className="border-2 border-accent text-accent font-semibold">All Users</Link></li>}
+                    {admin &&
+                        <>
+                            <li><Link to="/dashboard/users" className="border-2 border-accent mb-2 text-accent font-semibold">Admin</Link></li>
+                            <li><Link to="/dashboard/adddoctor" className="border-2 border-accent text-accent font-semibold">Add a Doctor</Link></li>
+                        </>}
                 </ul>
             </div>
         </div>
