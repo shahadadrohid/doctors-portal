@@ -26,7 +26,8 @@ const Dashboard = () => {
                     {admin &&
                         <>
                             <li><Link to="/dashboard/users" className="border-2 border-accent mb-2 text-accent font-semibold">Admin</Link></li>
-                            <li><Link to="/dashboard/adddoctor" className="border-2 border-accent text-accent font-semibold">Add a Doctor</Link></li>
+                            <li><Link to="/dashboard/adddoctor" className="border-2 mb-2 border-accent text-accent font-semibold">Add a Doctor</Link></li>
+                            <li><Link to="/dashboard/managedoctor" className="border-2 border-accent text-accent font-semibold">Manage Doctor</Link></li>
                         </>}
                 </ul>
             </div>

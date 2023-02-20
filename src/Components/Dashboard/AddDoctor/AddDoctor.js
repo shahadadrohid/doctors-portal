@@ -33,6 +33,7 @@ const AddDoctor = () => {
                 console.log(result.success)
                 if (result.success) {
                     const img = result.data.url;
+                    console.log(img);
                     const doctor = {
                         name: data.name,
                         email: data.email,

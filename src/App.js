@@ -14,6 +14,7 @@ import MyReview from './Components/Dashboard/MyReview/MyReview';
 import AllUsers from './Components/Dashboard/AllUsers/AllUsers';
 import RequireAdmin from './Components/Authentication/RequireAdmin/RequireAdmin';
 import AddDoctor from './Components/Dashboard/AddDoctor/AddDoctor';
+import ManageDoctors from './Components/Dashboard/ManageDoctors/ManageDoctors';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path="review" element={<MyReview></MyReview>}></Route>
           <Route path="users" element={<RequireAdmin><AllUsers></AllUsers></RequireAdmin>}></Route>
           <Route path="adddoctor" element={<RequireAdmin><AddDoctor></AddDoctor></RequireAdmin>}></Route>
+          <Route path="managedoctor" element={<RequireAdmin><ManageDoctors></ManageDoctors></RequireAdmin>}></Route>
         </Route>
         <Route path='/signup' element={<Register></Register>}></Route>
         <Route path='/login' element={<Login></Login>}></Route>
