@@ -20,6 +20,7 @@ const AddDoctor = () => {
     const imageApi = `4a076b70e626f9e2cad904fa956dd889`;
 
     const onSubmit = async data => {
+        console.log(data)
         const img = data.image[0];
         const formData = new FormData();
         formData.append('image', img);
@@ -30,10 +31,8 @@ const AddDoctor = () => {
         })
             .then(res => res.json())
             .then(result => {
-                console.log(result.success)
                 if (result.success) {
                     const img = result.data.url;
-                    console.log(img);
                     const doctor = {
                         name: data.name,
                         email: data.email,
@@ -129,8 +128,12 @@ const AddDoctor = () => {
                         <span className="label-text">Speciality</span>
                     </label>
 
-                    <select {...register("speciality")} className="select input-bordered w-full max-w-xs" name="" id="" >
-                        {services.map(service => <option key={service._id} value={service.name}>{service.name}</option>)}
+                    <select {...register("speciality")} className="select input-bordered w-full max-w-xs" name="speciality" id="" >
+                        {
+                            services.map(service =>
+                                <option key={service._id} value={service.name}
+                                >{service.name}</option>
+                            )}
                     </select>
 
                     <label className="label">

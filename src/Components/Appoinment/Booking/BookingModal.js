@@ -9,6 +9,7 @@ const BookingModal = ({ treament, date, setTreament, refetch }) => {
     // console.log(date)
     const { _id, name, slots } = treament;
     const formattedDate = format(date, 'PP')
+
     const handleBooking = event => {
         event.preventDefault();
         const slot = event.target.slot.value;

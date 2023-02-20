@@ -6,7 +6,12 @@ import Doctor from './Doctor';
 const ManageDoctors = () => {
     // const [doctors, setDoctors] = useState();
 
-    const { data: doctors, isLoading } = useQuery('doctors', () => fetch('http://localhost:5000/doctor').then(res => res.json()))
+    const { data: doctors, isLoading, refetch } = useQuery('doctors', () => fetch('http://localhost:5000/doctor', {
+        method: 'GET',
+        headers: {
+            authorization: `Bearer ${localStorage.getItem('accessToken')}`
+        }
+    }).then(res => res.json()))
     if (isLoading) {
         return <Loading></Loading>
     }
@@ -21,11 +26,12 @@ const ManageDoctors = () => {
                             <th>Image</th>
                             <th>Name</th>
                             <th>Speacility</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            doctors.map((doctor, index) => <Doctor key={doctor._id} doctor={doctor} index={index}></Doctor>)
+                            doctors.map((doctor, index) => <Doctor key={doctor._id} doctor={doctor} index={index} refetch={refetch}></Doctor>)
                         }
                     </tbody>
                 </table>
