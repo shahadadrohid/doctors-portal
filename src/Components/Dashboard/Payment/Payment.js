@@ -4,12 +4,7 @@ import { useParams } from 'react-router-dom';
 import Loading from '../../Home/Shared/Loading/Loading';
 import { loadStripe } from '@stripe/stripe-js';
 import CheckoutForm from './CheckoutForm';
-import {
-    CardElement,
-    Elements,
-    useStripe,
-    useElements,
-} from '@stripe/react-stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
 
 const stripePromise = loadStripe('pk_test_51MdxSLH0J1PIrROHyPEIAT4kqjT5yTIdurwKRMIkelMaUTtvIaQFLliuQakAJ7RMG0b4nhu3QQMfpEoTM3L6UlHh00Un9TZiPY');
 
@@ -30,8 +25,8 @@ const Payment = () => {
     return (
         <div>
             <div className="hero min-h-screen">
-                <div className="hero-content flex-col lg:flex-row-reverse">
-                    <div className="card w-50 bg-base-100 shadow-xl">
+                <div className="flex-col">
+                    <div className="card bg-base-100 shadow-xl mb-5">
                         <div className="card-body">
                             <p className="text-success font-bold">Hello, {appoinment.patientName}</p>
                             <h2 className="card-title">Pay for {appoinment.treatment}</h2>
@@ -41,7 +36,7 @@ const Payment = () => {
                             <p className="">Please pay: ${appoinment.price}</p>
                         </div>
                     </div>
-                    <div className="card flex-shrink-0 w-50 max-w-md shadow-2xl bg-base-100">
+                    <div className="card max-w-md shadow-2xl bg-base-100">
                         <div className="card-body">
                             <Elements stripe={stripePromise}>
                                 <CheckoutForm />
