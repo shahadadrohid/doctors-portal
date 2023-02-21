@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import { useAuthState, useSignOut } from 'react-firebase-hooks/auth';
 import auth from '../../../firebase.init';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const MyAppoinment = () => {
     const [user, loading, error] = useAuthState(auth);
@@ -18,7 +18,7 @@ const MyAppoinment = () => {
                 }
             })
                 .then(res => {
-                    console.log('Response', res)
+                    // console.log('Response', res)
                     if (res.status === 401 || res.status === 403) {
                         signOut()
                         localStorage.removeItem('accessToken')
@@ -27,7 +27,7 @@ const MyAppoinment = () => {
                     return res.json()
                 })
                 .then(data => {
-                    console.log(data)
+                    // console.log(data)
                     setAppoinment(data)
                 })
         }
@@ -43,22 +43,31 @@ const MyAppoinment = () => {
                             <th>Treatment</th>
                             <th>Date</th>
                             <th>Time</th>
+                            <th>Payment</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
                             appoinment?.map((a, index) =>
-                                <tr>
+                                < tr key={a._id}>
                                     <th>{index + 1}</th>
                                     <td>{a.treatment}</td>
                                     <td>{a.date}</td>
                                     <td>{a.slot}</td>
+                                    <td>
+                                        {(a.price && !a.paid) && <Link to={`/dashboard/payment/${a._id}`}>
+                                            <button
+                                                className="btn btn-xs btn-success"
+                                            >Pay Bill</button>
+                                        </Link>}
+                                        {(a.price && a.paid) && <span className="text-success">Paid</span>}
+                                    </td>
                                 </tr>)
                         }
                     </tbody>
                 </table>
             </div>
-        </div>
+        </div >
     );
 };
 

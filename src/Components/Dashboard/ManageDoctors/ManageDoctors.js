@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useQuery } from 'react-query';
 import Loading from '../../Home/Shared/Loading/Loading';
 import Doctor from './Doctor';
+import ConfirmationModal from './ConfirmationModal';
 
 const ManageDoctors = () => {
-    // const [doctors, setDoctors] = useState();
+    const [deleteDoctor, setDeleteDoctor] = useState();
 
     const { data: doctors, isLoading, refetch } = useQuery('doctors', () => fetch('http://localhost:5000/doctor', {
         method: 'GET',
@@ -31,11 +32,12 @@ const ManageDoctors = () => {
                     </thead>
                     <tbody>
                         {
-                            doctors.map((doctor, index) => <Doctor key={doctor._id} doctor={doctor} index={index} refetch={refetch}></Doctor>)
+                            doctors.map((doctor, index) => <Doctor key={doctor._id} doctor={doctor} index={index} setDeleteDoctor={setDeleteDoctor}></Doctor>)
                         }
                     </tbody>
                 </table>
             </div>
+            {deleteDoctor && <ConfirmationModal deleteDoctor={deleteDoctor} refetch={refetch} setDeleteDoctor={setDeleteDoctor}></ConfirmationModal>}
         </div >
     );
 };
