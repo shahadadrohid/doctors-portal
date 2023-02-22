@@ -10,10 +10,11 @@ const CheckoutForm = ({ appoinment }) => {
     const elements = useElements();
     const [cardError, setCardError] = useState('');
     const [success, setSuccess] = useState('');
+    const [processing, setProcessing] = useState(false);
     const [transactionId, setTransactionId] = useState('');
     const [clientSecret, setClientSecret] = useState('');
 
-    const { price, patient, patientName } = appoinment;
+    const { _id, price, patient, patientName } = appoinment;
 
     useEffect(() => {
         fetch('http://localhost:5000/create-payment-intent', {
@@ -52,6 +53,7 @@ const CheckoutForm = ({ appoinment }) => {
         });
         setCardError(error?.message || '');
         setSuccess('')
+        setProcessing(true);
         // Confirm card payment
 
         const { paymentIntent, error: intentError } = await stripe.confirmCardPayment(
@@ -68,6 +70,7 @@ const CheckoutForm = ({ appoinment }) => {
         );
         if (intentError) {
             setCardError(intentError.message);
+            setProcessing(false)
             setSuccess('');
         }
         else {
@@ -75,6 +78,25 @@ const CheckoutForm = ({ appoinment }) => {
             console.log(paymentIntent.id)
             setSuccess('Congrats! Your payment is completed')
             setTransactionId(paymentIntent.id)
+
+            //Store payment information on database
+            const payment = {
+                appointment: _id,
+                transactionId: paymentIntent.id
+            }
+            fetch(`http://localhost:5000/booking/${_id}`, {
+                method: 'PATCH',
+                headers: {
+                    'content-type': 'application/json',
+                    authorization: `Bearer ${localStorage.getItem('accessToken')}`
+                },
+                body: JSON.stringify({ payment })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    setProcessing(false)
+                    console.log(data)
+                })
         }
     }
 
